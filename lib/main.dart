@@ -92,6 +92,41 @@ class Homescreen extends StatelessWidget {
                   );
                 },
               ),
+              SizedBox(height: 8.0),
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage('https://via.placeholder.com/50'),
+                ),
+                title: Text('Photo 1'),
+                subtitle: Text('Description for Photo 1'),
+              ),
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage('https://via.placeholder.com/50'),
+                ),
+                title: Text('Photo 2'),
+                subtitle: Text('Description for Photo 2'),
+              ),
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage('https://via.placeholder.com/50'),
+                ),
+                title: Text('Photo 3'),
+                subtitle: Text('Description for Photo 3'),
+              ),
+              SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () {
+                  // Placeholder for uploading logic
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Photos Uploaded Successfully!'),
+                    ),
+                  );
+                },
+                child: Text('Upload'),
+
+              ),
             ],
           ),
         ),
