@@ -38,6 +38,7 @@ class Homescreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Photo Gallery'),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
