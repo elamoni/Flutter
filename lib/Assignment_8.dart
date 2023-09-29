@@ -18,27 +18,33 @@ class MyApp extends StatelessWidget {
 }
 
 class ProfilePage extends StatelessWidget {
-  final List<String> dummyImages = List.generate(
+  final List<String> thumbnailImages = List.generate(
     6,
         (index) => "https://via.placeholder.com/150",
   );
 
   @override
   Widget build(BuildContext context) {
-    final orientation = MediaQuery.of(context).orientation;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
       ),
-      body: orientation == Orientation.portrait
-          ? PortraitLayout()
-          : LandscapeLayout(),
+      body: OrientationBuilder(
+        builder: (context, orientation) {
+          return orientation == Orientation.portrait
+              ? PortraitLayout(thumbnailImages: thumbnailImages)
+              : LandscapeLayout(thumbnailImages: thumbnailImages);
+        },
+      ),
     );
   }
 }
 
 class PortraitLayout extends StatelessWidget {
+  final List<String> thumbnailImages;
+
+  PortraitLayout({required this.thumbnailImages});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -50,14 +56,15 @@ class PortraitLayout extends StatelessWidget {
           child: CircleAvatar(
             radius: 100.0,
             backgroundImage: NetworkImage(
-                'https://scontent.fdac157-1.fna.fbcdn.net/v/t39.30808-6/298196060_3193958230817848_5282291840762516684_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=a2f6c7&_nc_ohc=Uz8zByrKOd4AX_esvaC&_nc_ht=scontent.fdac157-1.fna&oh=00_AfAp0VedortMOh17mfx8DwPpf4cHTfvQF-JVDFeIMQbO4g&oe=651B8671'),
+              'https://via.placeholder.com/150',
+            ),
           ),
         ),
         // Name
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
-            'Esmot Ara',
+            'Your Name',
             style: TextStyle(
               fontSize: 24.0,
               fontWeight: FontWeight.bold,
@@ -69,42 +76,27 @@ class PortraitLayout extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
-            'Some text about yourselfn publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem',
+            'Some text about yourself. Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.',
             style: TextStyle(fontSize: 16.0),
           ),
         ),
         SizedBox(height: 16.0),
-        // Images
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        // Thumbnail Images
+        Column(
           children: [
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Image.network(
-                "https://via.placeholder.com/150"[0],
-                width: 100.0,
-                height: 100.0,
-                fit: BoxFit.cover,
+            for (int i = 0; i < thumbnailImages.length; i += 3)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (int j = i; j < i + 3 && j < thumbnailImages.length; j++)
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: ThumbnailCard(
+                        imageUrl: thumbnailImages[j],
+                      ),
+                    ),
+                ],
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Image.network(
-                "https://via.placeholder.com/150"[1],
-                width: 100.0,
-                height: 100.0,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Image.network(
-                "https://via.placeholder.com/150"[2],
-                width: 100.0,
-                height: 100.0,
-                fit: BoxFit.cover,
-              ),
-            ),
           ],
         ),
       ],
@@ -113,6 +105,10 @@ class PortraitLayout extends StatelessWidget {
 }
 
 class LandscapeLayout extends StatelessWidget {
+  final List<String> thumbnailImages;
+
+  LandscapeLayout({required this.thumbnailImages});
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -129,7 +125,8 @@ class LandscapeLayout extends StatelessWidget {
                 child: CircleAvatar(
                   radius: 100.0,
                   backgroundImage: NetworkImage(
-                      'https://scontent.fdac157-1.fna.fbcdn.net/v/t39.30808-6/298196060_3193958230817848_5282291840762516684_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=a2f6c7&_nc_ohc=Uz8zByrKOd4AX_esvaC&_nc_ht=scontent.fdac157-1.fna&oh=00_AfAp0VedortMOh17mfx8DwPpf4cHTfvQF-JVDFeIMQbO4g&oe=651B8671'),
+                    'https://scontent.fdac157-1.fna.fbcdn.net/v/t39.30808-6/298196060_3193958230817848_5282291840762516684_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=a2f6c7&_nc_ohc=Uz8zByrKOd4AX_esvaC&_nc_ht=scontent.fdac157-1.fna&oh=00_AfAp0VedortMOh17mfx8DwPpf4cHTfvQF-JVDFeIMQbO4g&oe=651B8671', // Replace with your profile image URL
+                  ),
                 ),
               ),
               // Name
@@ -148,49 +145,51 @@ class LandscapeLayout extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  'Some text about yourselfn publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem',
+                  'Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.',
                   style: TextStyle(fontSize: 16.0),
                 ),
               ),
             ],
           ),
         ),
-        // Images
+        // Thumbnail Images
         Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+            ),
+            itemCount: thumbnailImages.length,
+            itemBuilder: (context, index) {
+              return Padding(
                 padding: EdgeInsets.all(8.0),
-                child: Image.network(
-                  "https://via.placeholder.com/150"[0],
-                  width: 100.0,
-                  height: 100.0,
-                  fit: BoxFit.cover,
+                child: ThumbnailCard(
+                  imageUrl: thumbnailImages[index],
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Image.network(
-                  "https://via.placeholder.com/150"[1],
-                  width: 100.0,
-                  height: 100.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Image.network(
-                  "https://via.placeholder.com/150"[2],
-                  width: 100.0,
-                  height: 100.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ],
+              );
+            },
           ),
         ),
       ],
+    );
+  }
+}
+
+class ThumbnailCard extends StatelessWidget {
+  final String imageUrl;
+
+  ThumbnailCard({required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Container(
+        width: 100.0,
+        height: 100.0,
+        child: Image.network(
+          imageUrl,
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 }
