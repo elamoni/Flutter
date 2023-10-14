@@ -1,0 +1,73 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(const SelectListItemApp());
+
+class SelectListItemApp extends StatefulWidget {
+  const SelectListItemApp({super.key});
+
+  @override
+  _SelectListItemAppState createState() => _SelectListItemAppState();
+}
+
+class _SelectListItemAppState extends State<SelectListItemApp> {
+  final List<int> _selectedItems = [];
+  int count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Select List Item')),
+        body: ListView.builder(
+          itemCount: 10,
+          itemBuilder: (context, index) => Container(
+            color: (_selectedItems.contains(index))
+                ? Colors.blue.withOpacity(0.5)
+                : Colors.transparent,
+            child: ListTile(
+              onTap: () {
+                if (!_selectedItems.contains(index)) {
+                  setState(() => _selectedItems.add(index));
+                }
+              },
+              title: Text('item $index'),
+              selectedTileColor: Colors.lightBlue,
+            ),
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.check),
+            onPressed: (){
+              showAlertDialog(context);
+            }
+        ),
+      ),
+    );
+  }
+}
+
+showAlertDialog(BuildContext context) {
+
+  // set up the button
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () { },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("My title"),
+    content: Text("This is my message."),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
