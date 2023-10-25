@@ -1,0 +1,49 @@
+import 'package:flutter/material.dart';
+
+/// Flutter code sample for [AppBar].
+
+void main() => runApp(const AppBarApp());
+
+class AppBarApp extends StatelessWidget {
+  const AppBarApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: AlartWidget(),
+    );
+  }
+}
+
+class AlartWidget extends StatelessWidget {
+  const AlartWidget({super.key});
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Alert DialogBox'),
+
+      ),
+      body: Center(
+        child: ElevatedButton
+          (child: Text('Show alart'),
+            onPressed: () {
+            _showMyDialog(context);
+            }),
+      ),//center
+    );//scaffold
+  }
+}
+
+Future<void> _showMyDialog(BuildContext context)async{
+  return showDialog(context: context, builder: (BuildContext context){
+return AlertDialog(
+  title: Text('This is alart Demo'),
+);
+  });
+
+}
+
