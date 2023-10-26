@@ -1,0 +1,79 @@
+import 'package:flutter/material.dart';
+
+/// Flutter code sample for [AppBar].
+
+void main() => runApp(const AppBarApp());
+
+class AppBarApp extends StatelessWidget {
+  const AppBarApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Activity(),
+    );
+  }
+}
+
+class Activity extends StatelessWidget {
+  const Activity({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Simple Navigation'),
+      ),
+      body: Column(
+        children:[
+        ElevatedButton(onPressed: (){
+         Navigator.push(context,MaterialPageRoute(builder: (context)=>Page1Activity()));
+        }, child: Text('Go Activity 1')),//ElevatedButton1
+          
+          ElevatedButton(onPressed: (){
+            Navigator.push(context,MaterialPageRoute(builder: (context)=>Page2Activity()));
+          }, child: Text('Go Activity 2')),//ElevatedButton2
+
+          ],
+      ),//center
+    );//scaffold
+  }
+}
+
+
+class Page1Activity extends StatelessWidget {
+  const Page1Activity({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Activity 1'),
+      ),
+      body: Center(
+        child: Text('Show alart'),
+      ),//center
+    );//scaffold
+  }
+}
+
+
+
+
+class Page2Activity extends StatelessWidget {
+  const Page2Activity({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Activity 2'),
+      ),
+      body: Center(
+        child: Text('Show alart'),
+      ),//center
+    );//scaffold
+  }
+}
+
+
